@@ -70,6 +70,7 @@ const processRoomStat = (rawData: any[]) => {
 function Content() {
   const [peopleChart, setPeopleChart] = useState([]);
   const [classStat, setClassStat] = useState([]);
+  const [acStat, setAcStat] = useState([]);
 
   useEffect(() => {
     // Fetch data from the API using Axios
@@ -89,6 +90,15 @@ function Content() {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
+
+    axios
+      .get("https://classroom-api.vercel.app/acstat/getLatest")
+      .then((response) => {
+        setAcStat(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
   }, []);
 
   const peopleChartData = processChartPeople(peopleChart);
@@ -102,7 +112,7 @@ function Content() {
         label: "Total People",
         data: peopleChartData.total,
         borderColor: "rgb(255, 99, 132)",
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
+        backgroundColor: "rgb(240,255,240)",
         tension: 0.3,
       },
     ],
@@ -128,8 +138,8 @@ function Content() {
       {
         label: "Temperature Graph",
         data: statData.temp,
-        borderColor: "rgb(255, 99, 132)",
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
+        borderColor: "rgb(255,140,0)",
+        backgroundColor: "rgb(240,255,240)",
         tension: 0.3,
       },
     ],
@@ -141,8 +151,8 @@ function Content() {
       {
         label: "Humidity Graph",
         data: statData.humid,
-        borderColor: "rgb(255, 99, 132)",
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
+        borderColor: "rgb(65,105,225)",
+        backgroundColor: "rgb(240,255,240)",
         tension: 0.3,
       },
     ],
@@ -154,8 +164,8 @@ function Content() {
       {
         label: "AC Current Consumption",
         data: statData.current,
-        borderColor: "rgb(255, 99, 132)",
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
+        borderColor: "rgb(154,205,50)",
+        backgroundColor: "rgb(240,255,240)",
         tension: 0.3,
       },
     ],
@@ -167,8 +177,8 @@ function Content() {
       {
         label: "AC Power Consumption",
         data: statData.power,
-        borderColor: "rgb(255, 99, 132)",
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
+        borderColor: "rgb(112,128,144)",
+        backgroundColor: "rgb(240,255,240)",
         tension: 0.3,
       },
     ],
@@ -275,6 +285,35 @@ function Content() {
                     <h2>OFF</h2>
                   </div>
                 </div>
+                {acStat.map((data) => {
+                  return (
+                    <>
+                      <div className="col card offset-md-1">
+                        <div className="col-item">
+                          <h3>
+                            <i>
+                              <BiWind />
+                            </i>
+                            AC Status
+                          </h3>
+                          <h2>{data["condition"]}</h2>
+                        </div>
+                      </div>
+
+                      <div className="col card offset-md-1">
+                        <div className="col-item">
+                          <h3>
+                            <i>
+                              <BiWind />
+                            </i>
+                            AC Set Point Temperature
+                          </h3>
+                          <h2>{data["temperature"]} Celcius</h2>
+                        </div>
+                      </div>
+                    </>
+                  );
+                })}
               </div>
             </div>
 
@@ -394,7 +433,21 @@ function Content() {
                       <i>
                         <BsFillPersonFill />
                       </i>
-                      Air Conditioner Power Graph
+                      Lamp Power Graph
+                    </h3>
+                    <Line options={options} data={powerGraph} />
+                  </div>
+                </div>
+              </div>
+
+              <div className="row mb-3">
+                <div className="col card offset-md-1">
+                  <div className="col-item">
+                    <h3>
+                      <i>
+                        <BsFillPersonFill />
+                      </i>
+                      Projektor Power Graph
                     </h3>
                     <Line options={options} data={powerGraph} />
                   </div>
