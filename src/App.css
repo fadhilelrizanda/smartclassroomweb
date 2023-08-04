@@ -1,0 +1,101 @@
+.container-fluid
+{
+  background-color: aqua;
+}
+
+.sidebar-bg
+{
+  background-color: #222e3c;
+}
+
+.sidebar
+{
+  color: #ced4da;
+}
+
+.andalas-logo
+{
+  width: 40px;
+  height: 40px;
+  padding-right: 10px;
+}
+
+.side-title
+{
+  font-size: 18px;
+  text-align: center;
+  padding: 15px;
+}
+
+.list-side
+{
+  margin-left: 40px;
+  list-style-type: none;
+}
+
+
+.list-item
+{
+  /* background: rgb(134, 124, 105); */
+  padding: 10px;
+  border-bottom: 2px solid #222e3c ;
+}
+
+.list-item a
+{
+  text-decoration: none;
+  display: block;
+  color: #ced4da;
+}
+
+.list-item a:hover
+{
+
+  color: #f3f8fd;
+}
+
+
+
+.content-bg
+{
+  background-color: #f3f5f9;
+  
+}
+
+.content-bg h1
+{
+  font-size: 30px;
+  font-weight: 400;
+  padding: 20px;
+}
+
+.classroom-stat 
+{
+  padding: 30px;
+}
+
+.classroom-stat h3
+{
+  font-size: 23px;
+  padding-bottom: 15px;
+}
+
+.card
+{
+  background-color: #adc5e0;
+  border: 1px solid black;
+}
+
+.col-item h3
+{
+  font-size: 18px;
+  text-align: center;
+  padding: 10px;
+}
+
+.col-item h2
+{
+  font-size: 20px;
+  text-align: center;
+  padding:10px;
+}
