@@ -9,6 +9,7 @@ import { LuLampCeiling } from "react-icons/lu";
 import { PiFanBold } from "react-icons/pi";
 import { BiWind } from "react-icons/bi";
 import { BsFillProjectorFill } from "react-icons/bs";
+import { MdOutlineElectricBolt } from "react-icons/md";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import {
@@ -389,7 +390,7 @@ function Content() {
                   <div className="col-item">
                     <h3>
                       <i>
-                        <BsFillPersonFill />
+                        <FaTemperatureHigh />
                       </i>
                       Temperature Graph
                     </h3>
@@ -403,7 +404,7 @@ function Content() {
                   <div className="col-item">
                     <h3>
                       <i>
-                        <BsFillPersonFill />
+                        <WiHumidity />
                       </i>
                       Humidity Graph
                     </h3>
@@ -417,7 +418,7 @@ function Content() {
                   <div className="col-item">
                     <h3>
                       <i>
-                        <BsFillPersonFill />
+                        <MdOutlineElectricBolt />
                       </i>
                       Air Conditioner Current Graph
                     </h3>
@@ -431,7 +432,7 @@ function Content() {
                   <div className="col-item">
                     <h3>
                       <i>
-                        <BsFillPersonFill />
+                        <MdOutlineElectricBolt />
                       </i>
                       Lamp Power Graph
                     </h3>
@@ -445,7 +446,7 @@ function Content() {
                   <div className="col-item">
                     <h3>
                       <i>
-                        <BsFillPersonFill />
+                        <MdOutlineElectricBolt />
                       </i>
                       Projektor Power Graph
                     </h3>
