@@ -1,7 +1,3 @@
-import andalasLogo from "../assets/andalas-univ.png";
-import { BiHome } from "react-icons/bi";
-import { AiOutlineSetting } from "react-icons/ai";
-import { BsTable } from "react-icons/bs";
 import { BsFillPersonFill } from "react-icons/bs";
 import { FaTemperatureHigh } from "react-icons/fa";
 import { WiHumidity } from "react-icons/wi";
@@ -12,6 +8,8 @@ import { BsFillProjectorFill } from "react-icons/bs";
 import { MdOutlineElectricBolt } from "react-icons/md";
 import { useEffect, useState } from "react";
 import moment from "moment";
+import Iframe from "react-iframe";
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -24,6 +22,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import axios from "axios";
+import Sidebar from "./Sidebar";
 
 ChartJS.register(
   CategoryScale,
@@ -41,10 +40,99 @@ export const options = {
     legend: {
       position: "top" as const,
     },
-    // title: {
-    //   display: true,
-    //   text: "Chart.js Line C  ",
-    // },
+  },
+  scales: {
+    y: {
+      title: {
+        display: true,
+        text: "Total People",
+      },
+    },
+  },
+};
+
+export const option_people = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: "top" as const,
+    },
+  },
+  scales: {
+    y: {
+      title: {
+        display: true,
+        text: "Total People",
+      },
+    },
+  },
+};
+
+export const options_temp = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: "top" as const,
+    },
+  },
+  scales: {
+    y: {
+      title: {
+        display: true,
+        text: "Temperature (Celcius)",
+      },
+    },
+  },
+};
+
+export const options_humid = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: "top" as const,
+    },
+  },
+  scales: {
+    y: {
+      title: {
+        display: true,
+        text: "Humidity (%)",
+      },
+    },
+  },
+};
+
+export const options_current = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: "top" as const,
+    },
+  },
+  scales: {
+    y: {
+      title: {
+        display: true,
+        text: "Current (Amp)",
+      },
+    },
+  },
+};
+
+export const options_power = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: "top" as const,
+    },
+  },
+  scales: {
+    y: {
+      title: {
+        display: true,
+        text: "Power (W)",
+      },
+    },
   },
 };
 
@@ -69,6 +157,7 @@ const processRoomStat = (rawData: any[]) => {
 };
 
 function Content() {
+  const state_devices = ["OFF", "ON"];
   const [peopleChart, setPeopleChart] = useState([]);
   const [classStat, setClassStat] = useState([]);
   const [acStat, setAcStat] = useState([]);
@@ -105,7 +194,7 @@ function Content() {
   const peopleChartData = processChartPeople(peopleChart);
   let currentPeople = peopleChartData.total.slice(-1);
   currentPeople = currentPeople[0];
-  console.log(currentPeople);
+
   const data_people = {
     labels: peopleChartData.dates,
     datasets: [
@@ -132,7 +221,6 @@ function Content() {
   let currentPower = statData.power.slice(-1);
   currentPower = currentPower[0];
 
-  console.log(currentTemp);
   const tempGraph = {
     labels: statData.dates,
     datasets: [
@@ -189,35 +277,41 @@ function Content() {
     <>
       <div className="container-fluid">
         <div className="row">
-          <div className="col-md-3 sidebar-bg sidebar">
-            <h1 className="side-title">
-              <img className="img-fluid andalas-logo" src={andalasLogo} />
-              Dashboard Smart Classroom
-            </h1>
-            <div className="row">
-              <ul className="list-side">
-                <li className="list-item">
-                  <a href="#">
-                    {" "}
-                    <BiHome /> Dashboard
-                  </a>
-                </li>
-                <li className="list-item">
-                  <a href="#">
-                    <AiOutlineSetting /> Setting Data
-                  </a>
-                </li>
-                <li className="list-item">
-                  <a href="#">
-                    <BsTable /> Table
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
+          <Sidebar />
 
           <div className="col-md-9 content-bg">
             <h1> Dashboard</h1>
+
+            <div className="row justify-content-center stat1">
+              <h3>Classroom Location</h3>
+              <div className="col-8 card">
+                <div className="col-item">
+                  <Iframe
+                    url="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d997.327615384929!2d100.46348181323786!3d-0.9141914801323885!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2fd4b7bdd849eb0b%3A0xe44db7bc55dd4774!2sJurusan%20Teknik%20Mesin!5e0!3m2!1sid!2sid!4v1692108915606!5m2!1sid!2sid"
+                    width="100%"
+                    height="480px"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="row text-center">
+              <div className="col card loc">
+                <p>Gedung : Jurusan Teknik Mesin</p>
+              </div>
+
+              <div className="col card loc">
+                <p>Ruangan : Ruangan Bersama Teknik Mesin</p>
+              </div>
+
+              <div className="col card loc">
+                <p>Longitude : -0.9141365018472299 </p>
+              </div>
+
+              <div className="col card loc">
+                <p>Latitude : 100.46415638877296</p>
+              </div>
+            </div>
 
             <div className="classroom-stat">
               <h3>Classroom Statistic</h3>
@@ -271,7 +365,7 @@ function Content() {
                       </i>
                       Lamp Status
                     </h3>
-                    <h2>ON</h2>
+                    <h2>{state_devices[0]}</h2>
                   </div>
                 </div>
 
@@ -283,38 +377,43 @@ function Content() {
                       </i>
                       Fan Status
                     </h3>
-                    <h2>OFF</h2>
+                    <h2>{state_devices[0]}</h2>
                   </div>
                 </div>
-                {acStat.map((data) => {
-                  return (
-                    <>
-                      <div className="col card offset-md-1">
-                        <div className="col-item">
-                          <h3>
-                            <i>
-                              <BiWind />
-                            </i>
-                            AC Status
-                          </h3>
-                          <h2>{data["condition"]}</h2>
-                        </div>
-                      </div>
 
-                      <div className="col card offset-md-1">
-                        <div className="col-item">
-                          <h3>
-                            <i>
-                              <BiWind />
-                            </i>
-                            AC Set Point Temperature
-                          </h3>
-                          <h2>{data["temperature"]} Celcius</h2>
-                        </div>
-                      </div>
-                    </>
-                  );
-                })}
+                <div className="col card offset-md-1">
+                  <div className="col-item">
+                    <h3>
+                      <i>
+                        <BiWind />
+                      </i>
+                      AC Status
+                    </h3>
+                    {acStat.map((data) => {
+                      return (
+                        <h2 key={data["_id"]}>
+                          {state_devices[data["condition"]]}
+                        </h2>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="col card offset-md-1">
+                  <div className="col-item">
+                    <h3>
+                      <i>
+                        <BiWind />
+                      </i>
+                      AC Set Point Temperature
+                    </h3>
+                    {acStat.map((data) => {
+                      return (
+                        <h2 key={data["_id"]}>{data["temperature"]} Celcius</h2>
+                      );
+                    })}
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -394,7 +493,7 @@ function Content() {
                       </i>
                       Temperature Graph
                     </h3>
-                    <Line options={options} data={tempGraph} />
+                    <Line options={options_temp} data={tempGraph} />
                   </div>
                 </div>
               </div>
@@ -408,7 +507,7 @@ function Content() {
                       </i>
                       Humidity Graph
                     </h3>
-                    <Line options={options} data={humidGraph} />
+                    <Line options={options_humid} data={humidGraph} />
                   </div>
                 </div>
               </div>
@@ -422,7 +521,7 @@ function Content() {
                       </i>
                       Air Conditioner Current Graph
                     </h3>
-                    <Line options={options} data={currentGraph} />
+                    <Line options={options_current} data={currentGraph} />
                   </div>
                 </div>
               </div>
@@ -436,7 +535,7 @@ function Content() {
                       </i>
                       Lamp Power Graph
                     </h3>
-                    <Line options={options} data={powerGraph} />
+                    <Line options={options_power} data={powerGraph} />
                   </div>
                 </div>
               </div>
@@ -450,7 +549,7 @@ function Content() {
                       </i>
                       Projektor Power Graph
                     </h3>
-                    <Line options={options} data={powerGraph} />
+                    <Line options={options_power} data={powerGraph} />
                   </div>
                 </div>
               </div>
