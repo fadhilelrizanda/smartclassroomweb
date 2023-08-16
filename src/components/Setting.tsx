@@ -6,7 +6,9 @@ function Setting() {
   const [acStat, setAcStat] = useState([]);
   const [dataCondition, setDataCondition] = useState(0);
   const [dataTemp, setDataTemp] = useState(0);
-  //   const [relayStat, setRelayStat] = useState([]);
+  const [relayStat, setRelayStat] = useState([]);
+  const [fanStat, setFanStat] = useState(0);
+  const [lampStat, setLampStat] = useState(0);
   const state = ["OFF", "ON"];
 
   const handleSubmitAc = async (event: React.FormEvent) => {
@@ -37,24 +39,24 @@ function Setting() {
 
   const handleSubmitRelay = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("Data Condition : " + dataCondition);
-    console.log("Data dataTemp : " + dataTemp);
+    console.log("Data Fan : " + fanStat);
+    console.log("Data Lamp : " + lampStat);
 
     function refreshPage() {
       window.location.reload();
     }
 
     const post = {
-      condition: dataCondition,
-      temperature: dataTemp,
+      fan: fanStat,
+      lamp: lampStat,
     };
     try {
       const res = await axios.post(
-        "https://classroom-api.vercel.app/acstat/post",
+        "https://classroom-api.vercel.app/relaystat/post",
         post
       );
       console.log(res.data);
-      alert("data AC submitted");
+      alert("data fan & lamp submitted");
       refreshPage();
     } catch (e) {
       alert(e);
@@ -72,9 +74,9 @@ function Setting() {
         console.error("Error fetching data:", error);
       });
     axios
-      .get("https://classroom-api.vercel.app/acstat/getLatest")
+      .get("https://classroom-api.vercel.app/relaystat/getLatest")
       .then((response) => {
-        setAcStat(response.data);
+        setRelayStat(response.data);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -176,19 +178,17 @@ function Setting() {
                   <div className="col-item">
                     <h3>Fan Status</h3>
 
-                    {acStat.map((data) => {
+                    {relayStat.map((data) => {
                       return (
                         <p key={data["_id"]}>
-                          Current Status : {state[data["condition"]]}
+                          Current Status : {state[data["fan"]]}
                         </p>
                       );
                     })}
 
                     <div className="form-check form-switch">
                       <input
-                        onChange={(e) =>
-                          setDataCondition(parseInt(e.target.value))
-                        }
+                        onChange={(e) => setFanStat(parseInt(e.target.value))}
                         value="1"
                         className="form-check-input"
                         type="checkbox"
@@ -207,19 +207,17 @@ function Setting() {
                   <div className="col-item">
                     <h3>Lamp Status</h3>
 
-                    {acStat.map((data) => {
+                    {relayStat.map((data) => {
                       return (
                         <p key={data["_id"]}>
-                          Current Status : {state[data["condition"]]}
+                          Current Status : {state[data["lamp"]]}
                         </p>
                       );
                     })}
 
                     <div className="form-check form-switch">
                       <input
-                        onChange={(e) =>
-                          setDataCondition(parseInt(e.target.value))
-                        }
+                        onChange={(e) => setLampStat(parseInt(e.target.value))}
                         value="1"
                         className="form-check-input"
                         type="checkbox"

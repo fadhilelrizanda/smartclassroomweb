@@ -26,9 +26,9 @@ function Sidebar() {
               </Link>
             </li>
             <li className="list-item">
-              <a href="#">
+              <Link to="/table">
                 <BsTable /> Table
-              </a>
+              </Link>
             </li>
           </ul>
         </div>

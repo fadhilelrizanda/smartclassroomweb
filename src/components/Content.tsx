@@ -162,8 +162,7 @@ function Content() {
   const [classStat, setClassStat] = useState([]);
   const [acStat, setAcStat] = useState([]);
 
-  useEffect(() => {
-    // Fetch data from the API using Axios
+  const classGet = async () => {
     axios
       .get("https://classroom-api.vercel.app/class/getAll")
       .then((response) => {
@@ -172,6 +171,9 @@ function Content() {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
+  };
+
+  const roomstatGet = async () => {
     axios
       .get("https://classroom-api.vercel.app/roomstat/getAll")
       .then((response) => {
@@ -180,7 +182,9 @@ function Content() {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
+  };
 
+  const acStatGet = async () => {
     axios
       .get("https://classroom-api.vercel.app/acstat/getLatest")
       .then((response) => {
@@ -189,18 +193,33 @@ function Content() {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      classGet();
+      roomstatGet();
+      acStatGet();
+    }, 5000); // 5000 milliseconds = 5 seconds
+
+    // Clean up the interval when the component unmounts
+    return () => {
+      clearInterval(interval);
+    };
+    // Fetch data from the API using Axios
   }, []);
 
   const peopleChartData = processChartPeople(peopleChart);
   let currentPeople = peopleChartData.total.slice(-1);
   currentPeople = currentPeople[0];
 
+  let slice_param = 20;
   const data_people = {
-    labels: peopleChartData.dates,
+    labels: peopleChartData.dates.slice(0, slice_param),
     datasets: [
       {
         label: "Total People",
-        data: peopleChartData.total,
+        data: peopleChartData.total.slice(0, slice_param),
         borderColor: "rgb(255, 99, 132)",
         backgroundColor: "rgb(240,255,240)",
         tension: 0.3,
@@ -222,11 +241,11 @@ function Content() {
   currentPower = currentPower[0];
 
   const tempGraph = {
-    labels: statData.dates,
+    labels: statData.dates.slice(0, slice_param),
     datasets: [
       {
         label: "Temperature Graph",
-        data: statData.temp,
+        data: statData.temp.slice(0, slice_param),
         borderColor: "rgb(255,140,0)",
         backgroundColor: "rgb(240,255,240)",
         tension: 0.3,
@@ -235,11 +254,11 @@ function Content() {
   };
 
   const humidGraph = {
-    labels: statData.dates,
+    labels: statData.dates.slice(0, slice_param),
     datasets: [
       {
         label: "Humidity Graph",
-        data: statData.humid,
+        data: statData.humid.slice(0, slice_param),
         borderColor: "rgb(65,105,225)",
         backgroundColor: "rgb(240,255,240)",
         tension: 0.3,
@@ -248,11 +267,11 @@ function Content() {
   };
 
   const currentGraph = {
-    labels: statData.dates,
+    labels: statData.dates.slice(0, slice_param),
     datasets: [
       {
         label: "AC Current Consumption",
-        data: statData.current,
+        data: statData.current.slice(0, slice_param),
         borderColor: "rgb(154,205,50)",
         backgroundColor: "rgb(240,255,240)",
         tension: 0.3,
@@ -261,11 +280,11 @@ function Content() {
   };
 
   const powerGraph = {
-    labels: statData.dates,
+    labels: statData.dates.slice(0, slice_param),
     datasets: [
       {
         label: "AC Power Consumption",
-        data: statData.power,
+        data: statData.power.slice(0, slice_param),
         borderColor: "rgb(112,128,144)",
         backgroundColor: "rgb(240,255,240)",
         tension: 0.3,
