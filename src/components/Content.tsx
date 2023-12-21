@@ -302,19 +302,6 @@ function Content() {
     ],
   };
 
-  const powerGraph = {
-    labels: statData.dates.slice(-slice_param),
-    datasets: [
-      {
-        label: "AC Power Consumption",
-        data: statData.power.slice(-slice_param),
-        borderColor: "rgb(112,128,144)",
-        backgroundColor: "rgb(240,255,240)",
-        tension: 0.3,
-      },
-    ],
-  };
-
   const socketData = processChartSocket(socketStat);
   const fanPowerGraph = {
     labels: socketData.dates.slice(-slice_param),
