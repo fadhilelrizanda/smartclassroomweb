@@ -52,12 +52,25 @@ function Table() {
       });
   };
 
+  const getSocketData = async () => {
+    axios
+      .get("https://classroom-api.vercel.app/socketstat/getAll")
+      .then((response) => {
+        setSocket(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
+
   const [peopleData, setPeopleData] = useState([]);
   const [roomData, setRoomData] = useState([]);
+  const [socketData, setSocket] = useState([]);
 
   useEffect(() => {
     getDataPeople();
     getRoomData();
+    getSocketData();
   }, []);
 
   return (
@@ -151,6 +164,54 @@ function Table() {
                           <td>
                             <button
                               onClick={() => delData("roomstat", data["_id"])}
+                            >
+                              Delete
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <h4>Table of Power Consumtion</h4>
+            <button
+              onClick={() => {
+                ExportToExcel(socketData, "Data Parameter");
+              }}
+            >
+              Download Data
+            </button>
+            <div className="row justify-content-center">
+              <div className="col-md-10">
+                <table className="table table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col">No</th>
+                      <th scope="col">Fan </th>
+                      <th scope="col">Lamp</th>
+                      <th scope="col">Projector</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {socketData.map((data, index) => {
+                      return (
+                        <tr key={data["_id"]}>
+                          <th scope="row">{index + 1}</th>
+                          <td>{data["s1"]}</td>
+                          <td>{data["s2"]}</td>
+                          <td>{data["s3"]}</td>
+
+                          <td>
+                            {moment(data["updatedAt"]).format(
+                              "YYYY-MM-DD HH:mm:ss"
+                            )}
+                          </td>
+                          <td>
+                            <button
+                              onClick={() => delData("socketstat", data["_id"])}
                             >
                               Delete
                             </button>

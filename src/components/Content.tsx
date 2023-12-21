@@ -144,6 +144,16 @@ const processChartPeople = (rawData: any[]) => {
   return { dates, total };
 };
 
+const processChartSocket = (rawData: any[]) => {
+  const dates = rawData.map((item) =>
+    moment(item.updatedAt).format("YYYY-MM-DD HH:mm:ss")
+  );
+  const s1 = rawData.map((item) => item.s1);
+  const s2 = rawData.map((item) => item.s2);
+  const s3 = rawData.map((item) => item.s3);
+  return { dates, s1, s2, s3 };
+};
+
 const processRoomStat = (rawData: any[]) => {
   const dates = rawData.map((item) =>
     moment(item.updatedAt).format("YYYY-MM-DD HH:mm:ss")
@@ -161,6 +171,7 @@ function Content() {
   const [peopleChart, setPeopleChart] = useState([]);
   const [classStat, setClassStat] = useState([]);
   const [acStat, setAcStat] = useState([]);
+  const [socketStat, setSocketStat] = useState([]);
 
   const classGet = async () => {
     axios
@@ -195,11 +206,23 @@ function Content() {
       });
   };
 
+  const relayStatGet = async () => {
+    axios
+      .get("https://classroom-api.vercel.app/socketstat/getAll")
+      .then((response) => {
+        setSocketStat(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
+
   useEffect(() => {
     const interval = setInterval(() => {
       classGet();
       roomstatGet();
       acStatGet();
+      relayStatGet();
     }, 5000); // 5000 milliseconds = 5 seconds
 
     // Clean up the interval when the component unmounts
@@ -241,11 +264,11 @@ function Content() {
   currentPower = currentPower[0];
 
   const tempGraph = {
-    labels: statData.dates.slice(0, slice_param),
+    labels: statData.dates.slice(-slice_param),
     datasets: [
       {
         label: "Temperature Graph",
-        data: statData.temp.slice(0, slice_param),
+        data: statData.temp.slice(-slice_param),
         borderColor: "rgb(255,140,0)",
         backgroundColor: "rgb(240,255,240)",
         tension: 0.3,
@@ -254,11 +277,11 @@ function Content() {
   };
 
   const humidGraph = {
-    labels: statData.dates.slice(0, slice_param),
+    labels: statData.dates.slice(-slice_param),
     datasets: [
       {
         label: "Humidity Graph",
-        data: statData.humid.slice(0, slice_param),
+        data: statData.humid.slice(-slice_param),
         borderColor: "rgb(65,105,225)",
         backgroundColor: "rgb(240,255,240)",
         tension: 0.3,
@@ -267,11 +290,11 @@ function Content() {
   };
 
   const currentGraph = {
-    labels: statData.dates.slice(0, slice_param),
+    labels: statData.dates.slice(-slice_param),
     datasets: [
       {
         label: "AC Current Consumption",
-        data: statData.current.slice(0, slice_param),
+        data: statData.current.slice(-slice_param),
         borderColor: "rgb(154,205,50)",
         backgroundColor: "rgb(240,255,240)",
         tension: 0.3,
@@ -280,11 +303,51 @@ function Content() {
   };
 
   const powerGraph = {
-    labels: statData.dates.slice(0, slice_param),
+    labels: statData.dates.slice(-slice_param),
     datasets: [
       {
         label: "AC Power Consumption",
-        data: statData.power.slice(0, slice_param),
+        data: statData.power.slice(-slice_param),
+        borderColor: "rgb(112,128,144)",
+        backgroundColor: "rgb(240,255,240)",
+        tension: 0.3,
+      },
+    ],
+  };
+
+  const socketData = processChartSocket(socketStat);
+  const fanPowerGraph = {
+    labels: socketData.dates.slice(-slice_param),
+    datasets: [
+      {
+        label: "fan Power Consumption",
+        data: socketData.s1.slice(-slice_param),
+        borderColor: "rgb(112,128,144)",
+        backgroundColor: "rgb(240,255,240)",
+        tension: 0.3,
+      },
+    ],
+  };
+
+  const lampPowerGraph = {
+    labels: socketData.dates.slice(-slice_param),
+    datasets: [
+      {
+        label: "fan Power Consumption",
+        data: socketData.s2.slice(-slice_param),
+        borderColor: "rgb(112,128,144)",
+        backgroundColor: "rgb(240,255,240)",
+        tension: 0.3,
+      },
+    ],
+  };
+
+  const projektorPowerGraph = {
+    labels: socketData.dates.slice(-slice_param),
+    datasets: [
+      {
+        label: "fan Power Consumption",
+        data: socketData.s3.slice(-slice_param),
         borderColor: "rgb(112,128,144)",
         backgroundColor: "rgb(240,255,240)",
         tension: 0.3,
@@ -552,9 +615,23 @@ function Content() {
                       <i>
                         <MdOutlineElectricBolt />
                       </i>
+                      Fan Power Graph
+                    </h3>
+                    <Line options={options_power} data={fanPowerGraph} />
+                  </div>
+                </div>
+              </div>
+
+              <div className="row mb-3">
+                <div className="col card offset-md-1">
+                  <div className="col-item">
+                    <h3>
+                      <i>
+                        <MdOutlineElectricBolt />
+                      </i>
                       Lamp Power Graph
                     </h3>
-                    <Line options={options_power} data={powerGraph} />
+                    <Line options={options_power} data={lampPowerGraph} />
                   </div>
                 </div>
               </div>
@@ -568,7 +645,7 @@ function Content() {
                       </i>
                       Projektor Power Graph
                     </h3>
-                    <Line options={options_power} data={powerGraph} />
+                    <Line options={options_power} data={projektorPowerGraph} />
                   </div>
                 </div>
               </div>
