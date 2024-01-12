@@ -238,11 +238,11 @@ function Content() {
 
   let slice_param = 20;
   const data_people = {
-    labels: peopleChartData.dates.slice(0, slice_param),
+    labels: peopleChartData.dates.slice(-slice_param),
     datasets: [
       {
         label: "Total People",
-        data: peopleChartData.total.slice(0, slice_param),
+        data: peopleChartData.total.slice(-slice_param),
         borderColor: "rgb(255, 99, 132)",
         backgroundColor: "rgb(240,255,240)",
         tension: 0.3,
