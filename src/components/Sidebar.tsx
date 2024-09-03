@@ -1,6 +1,5 @@
 import andalasLogo from "../assets/andalas-univ.png";
 import { BiHome } from "react-icons/bi";
-import { AiOutlineSetting } from "react-icons/ai";
 import { BsTable } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
