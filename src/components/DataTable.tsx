@@ -23,7 +23,7 @@ function DataTable({
 }: DataTableProps) {
   const [tableData, setTableData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
 
   const getDataPeople = async () => {
@@ -46,7 +46,6 @@ function DataTable({
     }
   };
   // Extracting column headers dynamically
-  const columns = tableData.length > 0 ? Object.keys(tableData[0]) : [];
   const getPaginationRange = () => {
     const delta = 2; // Number of page numbers to show on either side of the current page
     const range = [];
