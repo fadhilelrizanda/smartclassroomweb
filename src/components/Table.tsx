@@ -1,9 +1,5 @@
 import Sidebar from "./Sidebar";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import moment from "moment";
-import * as FileSaver from "file-saver";
-import * as XLSX from "xlsx";
+
 import DataTable from "./DataTable";
 import {
   getAllPeopleData,
@@ -15,80 +11,6 @@ import {
   downloadAllRHData,
 } from "./API/ApiFetch";
 function Table() {
-  const ExportToExcel = (apiData: any, fileName: any) => {
-    const fileType =
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-    const fileExtension = ".xlsx";
-
-    // Format the timestamp using moment.js
-    const formattedData = apiData.map((data: any) => ({
-      ...data,
-      updatedAt: moment(data.updatedAt).format("YYYY-MM-DD HH:mm:ss"),
-    }));
-
-    const ws = XLSX.utils.json_to_sheet(formattedData);
-    const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
-    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-    const data = new Blob([excelBuffer], { type: fileType });
-    FileSaver.saveAs(data, fileName + fileExtension);
-  };
-
-  const delData = async (route: string, id: string) => {
-    try {
-      await axios.delete(
-        `https://classroom-api.vercel.app/${route}/delete/${id}`
-      );
-      alert("data deleted");
-      getDataPeople();
-      getRoomData();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getDataPeople = async () => {
-    axios
-      .get("https://classroom-api.vercel.app/class/getAll")
-      .then((response) => {
-        setPeopleData(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  };
-
-  const getRoomData = async () => {
-    axios
-      .get("https://classroom-api.vercel.app/roomstat/getAll")
-      .then((response) => {
-        setRoomData(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  };
-
-  const getSocketData = async () => {
-    axios
-      .get("https://classroom-api.vercel.app/socketstat/getAll")
-      .then((response) => {
-        setSocket(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  };
-
-  const [peopleData, setPeopleData] = useState([]);
-  const [roomData, setRoomData] = useState([]);
-  const [socketData, setSocket] = useState([]);
-
-  useEffect(() => {
-    // getDataPeople();
-    // getRoomData();
-    // getSocketData();
-  }, []);
-
   return (
     <>
       <div className="container-fluid ">
