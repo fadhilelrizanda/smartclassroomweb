@@ -610,7 +610,7 @@ function Content() {
                   <div className="col-item">
                     <h3>RH Wind</h3>
                     <LineChart
-                      data={rhProcessedData.shumid}
+                      data={rhProcessedData.wind}
                       xtitle="MPS"
                       title="Wind"
                       label={rhProcessedData.dates}
