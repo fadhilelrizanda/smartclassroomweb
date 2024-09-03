@@ -66,7 +66,7 @@ function Setting() {
   useEffect(() => {
     // Fetch data from the API using Axios
     axios
-      .get("https://classroom-api.vercel.app/acstat/getLatest")
+      .get("https://classroom-api.vercel.app/acstat/getLatest/1")
       .then((response) => {
         setAcStat(response.data);
       })
@@ -74,7 +74,7 @@ function Setting() {
         console.error("Error fetching data:", error);
       });
     axios
-      .get("https://classroom-api.vercel.app/relaystat/getLatest")
+      .get("https://classroom-api.vercel.app/relaystat/getLatest/1")
       .then((response) => {
         setRelayStat(response.data);
       })

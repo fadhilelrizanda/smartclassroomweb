@@ -21,9 +21,7 @@ function Sidebar() {
               </Link>
             </li>
             <li className="list-item">
-              <Link to="/setting">
-                <AiOutlineSetting /> Setting Data
-              </Link>
+              <Link to="/setting">Setting Data</Link>
             </li>
             <li className="list-item">
               <Link to="/table">
